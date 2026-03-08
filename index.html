@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DvAbdellah | terminal • code • security</title>
+  <!-- Monospace font: JetBrains Mono + fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Font awesome (optional, only for subtle icons but not required) – we'll use pure unicode for minimalism -->
+  <style>
+    /* ---------- GLOBAL RESET / TERMINAL THEME ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;   /* deep black */
+      color: #d0ffd0;              /* soft green */
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* terminal green accents & glow */
+    .neon {
+      color: #00ff88;
+      text-shadow: 0 0 5px #00ff88, 0 0 10px #00cc66;
+    }
+
+    /* ---------- TYPOGRAPHY & LINKS ---------- */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid #00ff88;
+      display: inline-block;
+      padding-bottom: 0.3rem;
+      box-shadow: 0 4px 8px rgba(0,255,136,0.1);
+    }
+
+    a, .link-like {
+      color: #00ff88;
+      text-decoration: none;
+      transition: 0.2s;
+      border-bottom: 1px dashed transparent;
+    }
+
+    a:hover, .link-like:hover {
+      border-bottom: 1px dashed #00ff88;
+      text-shadow: 0 0 8px #00ff88;
+    }
+
+    /* ---------- UTILITY CLASSES ---------- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- HEADER (terminal style) ---------- */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid #00ff88;
+      box-shadow: 0 2px 6px rgba(0,255,136,0.2);
+      background-color: #0a0a0a;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(2px);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .logo span {
+      color: #00ff88;
+      text-shadow: 0 0 8px #00ff88;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+    nav a {
+      font-size: 1rem;
+      background: transparent;
+      padding: 4px 0;
+    }
+
+    /* ---------- HERO SECTION with typing animation ---------- */
+    .hero {
+      padding: 80px 0 100px;
+      border-bottom: 1px solid #00ff88;
+      background: radial-gradient(circle at 20% 30%, #112211, #0a0a0a 70%);
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero .typing-wrapper {
+      display: flex;
+      align-items: center;
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .prompt {
+      color: #00ff88;
+      margin-right: 12px;
+      text-shadow: 0 0 6px #00ff88;
+    }
+
+    .typed-text {
+      color: #f0fff0;
+      border-right: 3px solid #00ff88;  /* cursor */
+      padding-right: 8px;
+      animation: blinkCursor 0.9s step-end infinite;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    @keyframes blinkCursor {
+      0%, 100% { border-color: #00ff88; }
+      50% { border-color: transparent; }
+    }
+
+    .hero-sub {
+      font-size: 1.2rem;
+      color: #b0ffb0;
+      margin: 20px 0 30px;
+      max-width: 650px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: transparent;
+      border: 2px solid #00ff88;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 0px;   /* sharp terminal edges */
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 0 4px #00ff88;
+    }
+
+    .btn:hover {
+      background: #00ff88;
+      color: #0a0a0a;
+      box-shadow: 0 0 20px #00ff88;
+      border-color: #00ff88;
+    }
+
+    /* ---------- SERVICES (terminal cards) ---------- */
+    .services-section {
+      padding: 90px 0;
+      border-bottom: 1px solid #00ff88;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .term-card {
+      background: #0e0e0e;
+      border: 1px solid #00ff88;
+      padding: 30px 20px;
+      box-shadow: 0 0 6px #00ff88 inset, 0 0 10px #00ff88;
+      transition: 0.25s ease;
+      text-align: left;
+      position: relative;
+    }
+
+    .term-card:hover {
+      box-shadow: 0 0 18px #00ff88, 0 0 30px #00cc66 inset;
+      transform: translateY(-4px);
+      border-color: #ccffcc;
+    }
+
+    .term-card h3 {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .term-card h3::before {
+      content: ">";
+      color: #00ff88;
+      font-weight: 700;
+    }
+
+    .term-card p {
+      color: #b8f3b8;
+      font-size: 0.95rem;
+    }
+
+    /* ---------- WHY CHOOSE US (system status logs) ---------- */
+    .why-section {
+      padding: 80px 0;
+      border-bottom: 1px solid #00ff88;
+      background: #0c0c0c;
+    }
+
+    .status-logs {
+      background: #0a0a0a;
+      border: 1px solid #00ff88;
+      padding: 40px 35px;
+      box-shadow: 0 0 20px rgba(0,255,136,0.2);
+      max-width: 750px;
+      margin: 30px auto 0;
+      text-align: left;
+    }
+
+    .log-item {
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px dashed #2a4a2a;
+      padding-bottom: 10px;
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
+    }
+
+    .log-check {
+      color: #00ff88;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-shadow: 0 0 10px #0f0;
+    }
+
+    .log-text {
+      color: #bcffbc;
+    }
+
+    /* ---------- CONTACT TERMINAL FORM ---------- */
+    .contact-section {
+      padding: 90px 0;
+      border-bottom: 1px solid #00ff88;
+    }
+
+    .terminal-form {
+      max-width: 600px;
+      margin: 40px auto 20px;
+      background: #0e0e0e;
+      border: 2px solid #00ff88;
+      padding: 40px;
+      box-shadow: 0 0 30px #00ff8840;
+    }
+
+    .form-row {
+      margin-bottom: 25px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .form-row label {
+      margin-bottom: 6px;
+      color: #00ffcc;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    .form-row label::before {
+      content: "$ ";
+      color: #00ff88;
+    }
+
+    .form-row input,
+    .form-row textarea {
+      background: #1a1a1a;
+      border: 1px solid #00ff88;
+      color: #adffad;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 14px 16px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.15s;
+    }
+
+    .form-row input:focus,
+    .form-row textarea:focus {
+      box-shadow: 0 0 12px #00ff88;
+      border-color: #b3ffb3;
+    }
+
+    .form-row textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .whatsapp-block {
+      margin: 30px 0 20px;
+      background: #102010;
+      padding: 24px;
+      border-left: 6px solid #00ff88;
+      font-size: 1.3rem;
+      word-break: break-word;
+    }
+
+    .whatsapp-block a {
+      font-weight: 700;
+      border-bottom: 2px solid #00ff88;
+    }
+
+    .whatsapp-block a:hover {
+      text-shadow: 0 0 12px #00ff88;
+    }
+
+    .btn-wa {
+      background: transparent;
+      border: 2px solid #00ff88;
+      padding: 12px 24px;
+      margin-top: 12px;
+      display: inline-block;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      color: #4f8a4f;
+      border-top: 1px solid #00ff88;
+      background: #0a0a0a;
+      font-size: 0.9rem;
+    }
+
+    .footer-terminal {
+      display: inline-block;
+      border: 1px dashed #00ff88;
+      padding: 8px 24px;
+      background: #0f0f0f;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 700px) {
+      .hero .typing-wrapper {
+        font-size: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .prompt {
+        margin-bottom: 6px;
+      }
+      .typed-text {
+        white-space: normal;
+        word-break: break-word;
+        border-right: none;
+        animation: none;
+        padding-right: 0;
+      }
+      .header-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+      nav {
+        gap: 1.5rem;
+      }
+      .log-item {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+  // Initialize EmailJS
+  (function(){
+      emailjs.init("SyHbYWdhPY0vbXvtS"); // your public key
+  })();
+
+  function sendEmail() {
+      const name = document.getElementById("contactName").value.trim() || "anonymous";
+      const email = document.getElementById("contactEmail").value.trim() || "no-email";
+      const message = document.getElementById("contactMsg").value.trim() || "no message";
+
+      const templateParams = {
+          from_name: name,
+          from_email: email,
+          message: message
+      };
+
+      // send email using your EmailJS service and template
+      emailjs.send("service_skvznjf", "template_aoih7bl", templateParams)
+      .then(function(response) {
+          alert(`[✓] Message from ${name} sent successfully!`);
+          // optionally clear form
+          document.getElementById("contactName").value = "";
+          document.getElementById("contactEmail").value = "";
+          document.getElementById("contactMsg").value = "";
+      }, function(error) {
+          alert("[!] Failed to send message. Try again.");
+          console.error("EmailJS error:", error);
+      });
+  }
+</script>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="logo"><span>>_</span> DvAbdellah</div>
+      <nav>
+        <a href="#services">[services]</a>
+        <a href="#why">[why]</a>
+        <a href="#contact">[contact]</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO with typing effect -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="typing-wrapper">
+        <span class="prompt">>$</span>
+        <span class="typed-text" id="typingTarget"></span>
+      </div>
+      <p class="hero-sub">Secure code · resilient systems · zero-compromise architecture — we build and protect your digital infrastructure.</p>
+      <div class="btn-group">
+        <a href="#contact" class="btn">[ start project ]</a>
+        <a href="#services" class="btn">[ view services ]</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES section (terminal cards) -->
+  <section id="services" class="services-section">
+    <div class="container">
+      <h2># available services</h2>
+      <div class="service-grid">
+        <div class="term-card"><h3>web dev</h3><p>Full‑stack apps, APIs, dashboards with security by design.</p></div>
+        <div class="term-card"><h3>python automation</h3><p>Scripts, bots, data pipelines & dev tools.</p></div>
+        <div class="term-card"><h3>cybersecurity audits</h3><p>Penetration testing, code review, vulnerability assessment.</p></div>
+        <div class="term-card"><h3>mobile dev</h3><p>Android & Flutter — clean, fast, maintainable.</p></div>
+        <div class="term-card"><h3>technical support</h3><p>24/7 maintenance, debugging, deployment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US (system status logs) -->
+  <section id="why" class="why-section">
+    <div class="container">
+      <h2># system status: why us</h2>
+      <div class="status-logs">
+        <div class="log-item"><span class="log-check">✔</span><span class="log-text">secure architecture — encrypted, hardened</span></div>
+        <div class="log-item"><span class="log-check">✔</span><span class="log-text">clean code — tested, reviewed, documented</span></div>
+        <div class="log-item"><span class="log-check">✔</span><span class="log-text">high performance — low latency, scalable</span></div>
+        <div class="log-item"><span class="log-check">✔</span><span class="log-text">reliable support — 24/7 incident response</span></div>
+        <div class="log-item"><span class="log-check">✔</span><span class="log-text">100% client-side encryption mindset</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT (terminal style + whatsapp number) -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2># contact terminal</h2>
+      <div class="terminal-form">
+        <div class="form-row">
+          <label>name</label>
+          <input type="text" placeholder="your handle" id="contactName">
+        </div>
+        <div class="form-row">
+          <label>email</label>
+          <input type="email" placeholder="user@domain" id="contactEmail">
+        </div>
+        <div class="form-row">
+          <label>message</label>
+          <textarea placeholder="describe your project / threat model ..." id="contactMsg"></textarea>
+        </div>
+        <button class="btn" style="width:100%;" onclick="sendEmail()">[ send message ]</button>
+
+        <!-- WhatsApp block with explicit number and clickable link -->
+        <div class="whatsapp-block">
+          📟 WhatsApp: <strong>+212 704-840475</strong><br>
+          <a href="https://wa.me/212704840475" target="_blank" class="btn btn-wa" style="margin-top:12px;">[ open WhatsApp chat ]</a>
+          <p style="font-size:0.9rem; margin-top:10px;">(click to message directly)</p>
+        </div>
+      </div>
+      <p style="color: #5fa85f;">>_ all messages are PGP‑aware • secure channel recommended</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-terminal">
+      © 2026 DevSecure. All rights reserved. <span style="color:#00ff88;">(v2.3.1 - secure build)</span>
+    </div>
+  </footer>
+
+  <!-- JavaScript: typing animation & simple contact alert -->
+  <script>
+    (function() {
+      // TYPING ANIMATION
+      const lines = [
+        "> Building Secure Digital Systems...",
+        "> Cyber security is not optional.",
+        "> Code. Protect. Scale.",
+        "> Ready for the unknown."
+      ];
+      let lineIndex = 0;
+      let charIndex = 0;
+      const target = document.getElementById('typingTarget');
+      if (!target) return;
+
+      function typeNext() {
+        if (charIndex < lines[lineIndex].length) {
+          target.textContent += lines[lineIndex].charAt(charIndex);
+          charIndex++;
+          setTimeout(typeNext, 70);
+        } else {
+          // pause, then erase (optional) — but we just move to next after longer pause
+          setTimeout(eraseAndNext, 2000);
+        }
+      }
+
+      function eraseAndNext() {
+        // erase current line char by char
+        if (charIndex > 0) {
+          target.textContent = target.textContent.slice(0, -1);
+          charIndex--;
+          setTimeout(eraseAndNext, 30);
+        } else {
+          lineIndex = (lineIndex + 1) % lines.length; // cycle
+          charIndex = 0;
+          typeNext();
+        }
+      }
+
+      // Start typing after a brief delay
+      setTimeout(typeNext, 300);
+    })();
+
+    // terminal style contact alert (pure function)
+    function terminalAlert() {
+      const name = document.getElementById('contactName')?.value.trim() || 'anonymous';
+      alert(`[>] message from ${name} — thank you. We'll encrypt & reply soon.`);
+    }
+
+    // smooth scrolling for internal links (already using CSS, but ensure no hash jump conflict)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // optional: make whatsapp block also trigger direct click (already link)
+  </script>
+
+  <!-- ensure that the contact number is hardcoded and visible -->
+  <!-- further micro-style for extra neon touch on prompt -->
+  <style>
+    /* extra blink simulation if typing stops */
+    .typed-text:empty::after {
+      content: "▋";
+      color: #00ff88;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%,100%{ opacity:1; } 50%{ opacity:0; }
+    }
+    /* consistent monospace for all */
+    textarea, input, button { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</body>
+</html>
